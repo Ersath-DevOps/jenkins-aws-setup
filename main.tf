@@ -4,12 +4,12 @@ provider "aws" {
 }
 
 resource "aws_vpc" "my_vpc" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = "10.0.0.0/24"
 }
 
 resource "aws_subnet" "private_subnet" {
   vpc_id            = aws_vpc.my_vpc.id
-  cidr_block        = "10.0.1.0/24"
+  cidr_block        = "10.0.0.0/24"
   map_public_ip_on_launch = false
 }
 
@@ -24,8 +24,8 @@ resource "aws_security_group" "app_sg" {
 }
 ######## instance ##########
 resource "aws_instance" "app_server" {
-  ami                    = "ami-0c41531b8d18cc72b"
-  instance_type          = "t3.micro"
+  ami                    = "ami-0c7af5fe939f2677f"
+  instance_type          = "t2.micro"
   subnet_id             = aws_subnet.private_subnet.id
   security_groups       = [aws_security_group.app_sg.id]
   user_data = <<-EOF
